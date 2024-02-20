@@ -9,16 +9,15 @@ class Music(ModelBase):
 
     name = models.CharField(max_length=100)
     lyric = models.TextField()
-    artist = models.ForeignKey("music.Artist", on_delete=models.RESTRICT)
-    # album = models.ForeignKey(
-    #     "backend.Album", on_delete=models.SET_NULL, null=True, blank=True
-    # )
-    # playlist = models.ForeignKey(
-    #     "backend.Playlist", on_delete=models.SET_NULL, null=True, blank=True
-    # )
-    heart = models.BooleanField(default=False)
+    artist = models.ManyToManyField("music.Artist", related_name="artist_item", through='ArtistItem')
+    album = models.ForeignKey(
+        "music.Album", on_delete=models.PROTECT, null=True, blank=True
+    )
     audio = models.FileField(upload_to="audio", null=False)
     image = models.ImageField(upload_to="image/music", null=False)
+    number_listens = models.IntegerField(default=0)
+
+    popular = models.BooleanField(default=False)
 
     def audio_url(self):
         if self.audio:
@@ -31,3 +30,11 @@ class Music(ModelBase):
             return self.image.url
         else:
             return None
+
+class ArtistItem(ModelBase):
+    artist = models.ForeignKey("music.Artist", on_delete=models.CASCADE)
+    music = models.ForeignKey(Music, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "ArtistItem"
+        ordering = ["created_at"]

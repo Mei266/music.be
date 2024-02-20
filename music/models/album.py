@@ -8,14 +8,9 @@ class Album(ModelBase):
         verbose_name = "Album"
 
     title = models.CharField(max_length=100)
-    artist = models.ForeignKey("music.Artist", on_delete=models.RESTRICT)
-    heart = models.BooleanField(default=False)
-    number_of_music = models.IntegerField(default=0)
+    artist = models.ForeignKey("music.Artist", on_delete=models.PROTECT)
     image = models.ImageField(upload_to="album")
-    category = models.ForeignKey(
-        "music.Category", on_delete=models.SET_NULL, null=True, blank=True
-    )
-    musics = models.ManyToManyField(Music)
+    popular = models.BooleanField(default=False)
 
     def image_url(self):
         if self.image:

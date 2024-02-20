@@ -1,8 +1,6 @@
 from django.db import models
 from .base import ModelBase
 
-# from django.contrib.postgres.fields import ArrayField
-from music.models import Music
 
 
 class Playlist(ModelBase):
@@ -15,14 +13,11 @@ class Playlist(ModelBase):
         "music.User", on_delete=models.CASCADE, null=True, blank=True, related_name="playlist_user"
     )
     heart = models.BooleanField(default=False)
-    number_of_music = models.IntegerField(default=0)
-    # total_time (?)
     image = models.ImageField(upload_to="image/music", null=True)
     description = models.TextField(null=True)
-    category = models.ForeignKey(
-        "music.Category", on_delete=models.SET_NULL, null=True, blank=True
+    musics = models.ManyToManyField(
+        "music.Music", related_name="playlist_item", through='PlaylistItem'
     )
-    musics = models.ManyToManyField(Music, null=True)
 
     def image_url(self):
         if self.image:
@@ -30,9 +25,10 @@ class Playlist(ModelBase):
         else:
             return None
 
-    def save(self, *args, **kwargs):
-        if not self.id:
-            super(self.__class__, self).save(*args, **kwargs)
-        else:
-            self.number_of_music = self.musics.count()
-            super(self.__class__, self).save(*args, **kwargs)
+class PlaylistItem(ModelBase):
+    playist = models.ForeignKey(Playlist, on_delete=models.CASCADE)
+    music = models.ForeignKey("music.Music", on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "Playlistitem"
+        ordering = ["created_at"]
