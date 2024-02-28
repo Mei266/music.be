@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_swagger',
     'drf_yasg',
-    'corsheaders'
+    'corsheaders',
+    'mutagen'
 ]
 
 MIDDLEWARE = [
@@ -148,4 +149,5 @@ X_FRAME_OPTIONS = "SAMEORIGIN"
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "http://localhost:3006",
 ]

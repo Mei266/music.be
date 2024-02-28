@@ -15,6 +15,10 @@ from .music import (
     SearchMusic,
     HeartMusic,
     HeartListMusic,
+    IncreaseListen,
+    LatestMusicViews,
+    TopMusicViews,
+    PopularMusicViews
 )
 
 from .playlist import (
@@ -26,3 +30,7 @@ from .playlist import (
     PlayListCreateViews,
     PlaylistCountByAuthor,
 )
+
+from .album import PopularAlbumViews
+from .heart import HeartViews, HeartUserViews, HeartRemoveViews
+from .search import SearchViews

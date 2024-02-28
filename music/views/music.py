@@ -2,9 +2,9 @@ from rest_framework.views import APIView
 from django.http import JsonResponse
 from drf_yasg.utils import swagger_auto_schema
 from music.serializers import MusicSerializers, SearchMusicSerializers
-from music.models import Music, Playlist
+from music.models import Music, Playlist, Heart
 from rest_framework import status
-from mysite import settings
+from django.db.models import Count
 
 
 class MusicViews(APIView):
@@ -14,7 +14,6 @@ class MusicViews(APIView):
     @swagger_auto_schema(responses={200: MusicSerializers(many=True)})
     def get(self, request):
         try:
-            print(settings.SECRET_KEY)
             musics = Music.objects.all().order_by("created_at")
             serializer = MusicSerializers(musics, many=True)
             return JsonResponse(
@@ -38,6 +37,80 @@ class MusicViews(APIView):
                 {"message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
+class IncreaseListen(APIView):
+    authentication_classes = []
+    permission_classes = []
+
+    def put(self, request, id):
+        try:
+            music = Music.objects.get(id=id)
+            music.number_listens += 1
+            music.save()
+            serializer = MusicSerializers(music)
+            return JsonResponse(serializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return JsonResponse({"message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class LatestMusicViews(APIView):
+    authentication_classes = []
+    permission_classes = []
+
+    @swagger_auto_schema(responses={200: MusicSerializers(many=True)})
+    def get(self, request):
+        try:
+            musics = Music.objects.order_by("-created_at")[:8]
+            serializer = MusicSerializers(musics, many=True)
+            return JsonResponse(
+                data=serializer.data, status=status.HTTP_200_OK, safe=False
+            )
+        except Exception as e:
+            return JsonResponse(
+                {"message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+    
+class TopMusicViews(APIView):
+    authentication_classes = []
+    permission_classes = []
+
+    @swagger_auto_schema(responses={200: MusicSerializers(many=True)})
+    def get(self, request):
+        try:
+            musics = Music.objects.order_by("-number_listens")[:10]
+            serializer = MusicSerializers(musics, many=True)
+            return JsonResponse(
+                data=serializer.data, status=status.HTTP_200_OK, safe=False
+            )
+        except Exception as e:
+            return JsonResponse(
+                {"message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+class PopularMusicViews(APIView):
+    authentication_classes = []
+    permission_classes = []
+
+    @swagger_auto_schema(responses={200: MusicSerializers(many=True)})
+    def get(self, request):
+        try:
+            # Thống kê số lượng người dùng yêu thích mỗi bài hát
+            heart_counts = Heart.objects.values('music').annotate(user_count=Count('user'))
+
+            # Sắp xếp theo số lượng người dùng giảm dần và lấy 5 bài hát đầu tiên
+            top_5_music = heart_counts.order_by('-user_count')[:4]
+
+            # Lấy danh sách các ID của 5 bài hát có số lượng người dùng yêu thích nhiều nhất
+            top_5_music_ids = [item['music'] for item in top_5_music]
+
+            # Lấy thông tin chi tiết của các bài hát từ các ID trên
+            top_5_music_details = Music.objects.filter(pk__in=top_5_music_ids)
+            serializer = MusicSerializers(top_5_music_details, many=True)
+            return JsonResponse(
+                data=serializer.data, status=status.HTTP_200_OK, safe=False
+            )
+        except Exception as e:
+            return JsonResponse(
+                {"message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 class MusicDetailViews(APIView):
     authentication_classes = []

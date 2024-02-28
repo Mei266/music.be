@@ -10,7 +10,9 @@ class Album(ModelBase):
     title = models.CharField(max_length=100)
     artist = models.ForeignKey("music.Artist", on_delete=models.PROTECT)
     image = models.ImageField(upload_to="album")
-    popular = models.BooleanField(default=False)
+
+    def __str__(self):
+        return '%s - %s' % (self.pk, self.title)
 
     def image_url(self):
         if self.image:

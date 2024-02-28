@@ -14,3 +14,6 @@ class Artist(ModelBase):
             return self.image.url
         else:
             return None
+
+    def __str__(self):
+        return '%s - %s' % (self.pk, self.name)

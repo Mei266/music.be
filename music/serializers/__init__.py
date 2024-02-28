@@ -5,3 +5,7 @@ from .playlist import (
     PlaylistLimitMusicSerializers,
     PlaylistUpdateSerializers,
 )
+from .album import AlbumSerializers
+from .heart import HeartSerializers
+from .artist import ArtistSerializers
+from .search import SearchSerializers

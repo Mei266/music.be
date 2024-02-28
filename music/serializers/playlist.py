@@ -14,7 +14,6 @@ class PlaylistSerializers(serializers.ModelSerializer):
             "title",
             "heart",
             "description",
-            "number_of_music",
             "image",
             "author_name",
             "music_list",

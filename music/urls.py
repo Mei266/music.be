@@ -24,7 +24,7 @@ urlpatterns = [
     # user
     path("user/register", views.UserRegisterView.as_view(), name="user register"),
     path("user/<int:id>/update", views.UserUpdateView.as_view(), name="user update"),
-    path("user/<int:id>/heart", views.UserHeartView.as_view(), name="user heart"),
+    # path("user/<int:id>/heart", views.UserHeartView.as_view(), name="user heart"),
     path(
         "user/<int:id>/music/add", views.UserAddMusicView.as_view(), name="user heart"
     ),
@@ -35,6 +35,8 @@ urlpatterns = [
     ),
     # music
     path("music", views.MusicViews.as_view(), name="get all music"),
+    path("music/latest", views.LatestMusicViews.as_view(), name="get 8 lastest music"),
+    path("music/<int:id>/increase", views.IncreaseListen.as_view(), name="increase listen"),
     path("music/<int:id>", views.MusicDetailViews.as_view(), name="get music"),
     path(
         "music/random/<int:id>",
@@ -90,5 +92,48 @@ urlpatterns = [
         "playlist/count/<int:author_id>",
         views.PlaylistCountByAuthor.as_view(),
         name="count by author",
+    ),
+    # home
+    path(
+        "home/latest",
+        views.LatestMusicViews.as_view(),
+        name="get 8 music lastest",
+    ),
+    path(
+        "home/popular_music",
+        views.PopularMusicViews.as_view(),
+        name="get 4 popular music",
+    ),
+    path(
+        "home/popular_album",
+        views.PopularAlbumViews.as_view(),
+        name="get 4 album popular",
+    ),
+    path(
+        "home/top",
+        views.TopMusicViews.as_view(),
+        name="get top 10 mmusic",
+    ),
+    # Heart
+    path(
+        "heart",
+        views.HeartViews.as_view(),
+        name="heart",
+    ),
+    path(
+        "heart",
+        views.HeartViews.as_view(),
+        name="heart",
+    ),
+    path(
+        "heart/delete",
+        views.HeartRemoveViews.as_view(),
+        name="user heart",
+    ),
+    # search
+    path(
+        "search",
+        views.SearchViews.as_view(),
+        name="search music, artist, album",
     ),
 ]
