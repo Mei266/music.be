@@ -18,7 +18,9 @@ from .music import (
     IncreaseListen,
     LatestMusicViews,
     TopMusicViews,
-    PopularMusicViews
+    PopularMusicViews,
+    PopularMusicAlbumViews,
+    MusicAlbumViews
 )
 
 from .playlist import (
@@ -34,3 +36,4 @@ from .playlist import (
 from .album import PopularAlbumViews
 from .heart import HeartViews, HeartUserViews, HeartRemoveViews
 from .search import SearchViews
+from .follow import FollowRemoveViews, FollowViews, FollowUserViews

@@ -17,3 +17,11 @@ class Artist(ModelBase):
 
     def __str__(self):
         return '%s - %s' % (self.pk, self.name)
+    
+class Follow(ModelBase):
+    class Meta:
+        verbose_name = "Follow"
+    
+    user = models.ForeignKey("music.User", on_delete=models.CASCADE)
+    artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
+

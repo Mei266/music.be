@@ -121,8 +121,13 @@ urlpatterns = [
         name="heart",
     ),
     path(
-        "heart",
-        views.HeartViews.as_view(),
+        "user/<int:id>/heart",
+        views.HeartUserViews.as_view(),
+        name="heart",
+    ),
+    path(
+        "user/<int:id>/follow",
+        views.FollowUserViews.as_view(),
         name="heart",
     ),
     path(
@@ -135,5 +140,28 @@ urlpatterns = [
         "search",
         views.SearchViews.as_view(),
         name="search music, artist, album",
+    ),
+    # artist
+    path(
+        "artist/<int:id>/popular",
+        views.PopularMusicAlbumViews.as_view(),
+        name="get popular music of artists",
+    ),
+    # album
+    path(
+        "album/<int:id>",
+        views.MusicAlbumViews.as_view(),
+        name="get music of album",
+    ),
+    # follow
+    path(
+        "follow",
+        views.FollowViews.as_view(),
+        name="create follow",
+    ),
+    path(
+        "follow/delete",
+        views.FollowRemoveViews.as_view(),
+        name="delete follow",
     ),
 ]
