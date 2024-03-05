@@ -92,4 +92,4 @@ nohup.out
 node_modules
 
 data
-media
+# media
