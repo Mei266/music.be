@@ -108,7 +108,7 @@ class PlayListDetailViews(APIView):
             # print(3)
             if request.data["title"] != "null":
                 playlist.title = request.data["title"]
-            if request.data["image"]:
+            if request.data["image"] != "null":
                 playlist.image = request.data["image"]
             if request.data["description"] != "null":
                 playlist.description = request.data["description"]
