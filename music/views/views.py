@@ -54,12 +54,17 @@ class UsernameVerifiView(APIView):
     def post(self, request):
         try:
             username = request.data["username"]
-            user = User.objects.get(username=username)
+            user = User.objects.filter(username=username)
+            if user.exists():
+                data = user.first()
+                return JsonResponse({"acept": True, "userid": data.id, "username": data.username},status=status.HTTP_200_OK,)
             return JsonResponse(
-                {"acept": True, "userid": user.id, "username": user.username},
+                {"acept": False, "message": "Không tìm thấy tài khoản của bạn"},
                 status=status.HTTP_200_OK,
             )
+                
         except Exception:
+            print("error")
             return JsonResponse(
                 {"acept": False, "message": "Không tìm thấy tài khoản của bạn"},
                 status=status.HTTP_404_NOT_FOUND,
@@ -82,7 +87,7 @@ class UserRegisterView(APIView):
                 is_active=True,
             )
             return JsonResponse(
-                {"acept": True, "data": user.username},
+                {"acept": True, "data": user.username, "userid": user.id},
                 status=status.HTTP_200_OK,
             )
         except Exception as e:
