@@ -9,4 +9,4 @@ class PlaylistAdmin(admin.ModelAdmin):
     inlines = [ PlaylistItemInline ]
 
 
-admin.site.register(Playlist, PlaylistAdmin)
+# admin.site.register(Playlist, PlaylistAdmin)

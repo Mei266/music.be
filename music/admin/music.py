@@ -20,6 +20,7 @@ class MusicAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'duration', 'number_listens')
     form = MusicAdminForm
     inlines = [ ArtistInline ]
+    search_fields=['name']
 
 
 admin.site.register(Music, MusicAdmin)

@@ -13,6 +13,8 @@ class AlbumAdmin(admin.ModelAdmin):
         MuiscInline
     ]
 
+    search_fields=['title']
+
     def save_formset(self, request, form, formset, change):
         instances = formset.save(commit=False)
         obj = form.instance

@@ -8,6 +8,7 @@ class MuiscInline(admin.TabularInline):
 class ArtistAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')
     inlines = [ MuiscInline ]
+    search_fields=['name']
 
 
 admin.site.register(Artist, ArtistAdmin)
